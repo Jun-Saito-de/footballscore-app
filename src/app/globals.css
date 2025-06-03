@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --main:#10A836;
 }
 
 @theme inline {
@@ -20,7 +21,59 @@
 }
 
 body {
-  background: var(--background);
+  /* background: var(--background); */
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6),rgba(255, 255, 255, 0.6)), url('/images/bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+  min-height: 100vh;
+}
+
+img {
+  vertical-align: bottom;
+  height: auto;
+  width: 100%;
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.title {
+  text-align: center;
+  font-size: 4.25rem;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  margin-block-end: 2rem;
+}
+
+.greenBtn {
+  max-width: 400px;
+  width: 10em;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: var(--main);
+  padding: 12px;
+  display: block;
+  border-radius: 8px;
+  margin: 16px auto;
+}
+
+.topContainer {
+  display: grid;
+  place-content: center;
+}
+
+.iconimage {
+  display: grid;
+  place-content: center;
+}
+
+.iconimage img {
+  object-fit: cover;
+    width: 30vw;
+  height: 30vw;
 }
