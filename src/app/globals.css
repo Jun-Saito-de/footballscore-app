@@ -3,7 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --main:#10A836;
+  --main:var(--color-green-400);
 }
 
 @theme inline {
@@ -43,6 +43,10 @@ img {
   margin-inline: auto;
 }
 
+.header {
+  background-color: var(--main);
+}
+
 .greenBtn {
   max-width: 400px;
   width: 10em;
@@ -63,7 +67,8 @@ img {
 .iconimage {
   display: grid;
   place-content: center;
-  padding-block-start: 4rem;
+  padding-block-start: clamp(2rem, 1.121rem + 4.4vw, 4rem);
+  margin-block-end: clamp(1rem, 0.56rem + 2.2vw, 2rem);
 }
 
 .iconimage img {
@@ -75,7 +80,11 @@ img {
 }
 
 .logo {
-  font-size: 5rem;
+  font-size: clamp(2rem, 0.681rem + 6.59vw, 5rem);
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   text-align: center;
+}
+
+footer {
+  font-weight: 500;
 }
