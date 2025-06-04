@@ -5,7 +5,7 @@ export default function Home() {
     <main>
       <div className="wrapper topContainer">
         <div className="iconimage"><img src="/images/brazilflag.png" alt="" /></div>
-        <h1 className="title">Calendario da Serie A</h1>
+        <h2 className="logo">Calendario da Serie A</h2>
         <button className="greenBtn">試合一覧</button>
         <button className="greenBtn">トップに戻る</button>
       </div>

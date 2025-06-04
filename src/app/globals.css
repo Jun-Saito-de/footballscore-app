@@ -43,13 +43,6 @@ img {
   margin-inline: auto;
 }
 
-.title {
-  text-align: center;
-  font-size: 4.25rem;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  margin-block-end: 2rem;
-}
-
 .greenBtn {
   max-width: 400px;
   width: 10em;
@@ -70,10 +63,19 @@ img {
 .iconimage {
   display: grid;
   place-content: center;
+  padding-block-start: 4rem;
 }
 
 .iconimage img {
   object-fit: cover;
-    width: 30vw;
-  height: 30vw;
+    width: 20vw;
+  height: 20vw;
+  border-radius: 50%;
+
+}
+
+.logo {
+  font-size: 5rem;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  text-align: center;
 }
