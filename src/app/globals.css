@@ -88,3 +88,12 @@ img {
 footer {
   font-weight: 500;
 }
+
+/* 試合カード部分 */
+article.match-card {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: 2%;
+}
+
+
