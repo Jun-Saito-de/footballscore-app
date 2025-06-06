@@ -113,6 +113,10 @@ article time {
     margin-inline: 0.5em
 }
 
+.team-score__half {
+  margin-inline: 0.3em;
+}
+
 .teamname__home {
   width: 8em;
   text-align: right;
