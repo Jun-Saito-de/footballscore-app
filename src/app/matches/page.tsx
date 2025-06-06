@@ -1,70 +1,32 @@
-import MatchCard from "@/components/MatchCard";
-import Image from "next/image";
 import React from "react";
+import MatchCard from "@/components/matches/MatchCard";
+import Image from "next/image";
+import { getMatches, MatchInfo } from "@/hooks/getMatches";
 
-type MatchType = {
-    id: number;
-    matchday: string;
-    utcDate: string;
-    venue: string;
-    minute: number,
-    status: string; 
-    homeTeam: {name: string};
-    awayTeam: {name: string};    
-}
-
-// 疑似データ
-const match = [
-    {
-    id: 150,
-    homeTeam: {
-        name: 'フラメンゴ',
-        tla: 'FLA'
-    },
-    awayTeam: {
-        name: 'フルミネンセ',
-        tla: 'FLU'
-    },
-    utcDate: "2025-06-07T19:00:00Z",
-    status: '試合中',
-    minute: 69,
-    venue: '埼玉スタジアム2002',
-    matchday: 5,
-    attendance: 35100,
-    score: {
-        winner: "DRAW",
-        fullTime: {
-            home: 3,
-            away: 2
-        },
-        halfTime: {
-            home: 1,
-            away: 2
-        }
-    },
-    goals: [
-        {
-            minute: 26,
-            team: {
-                id: 600,
-                name: 'フルミネンセ'
-            },
-            scorer: {
-                id: 1285,
-                name: "クリスティアーノ"
-            }
-        }
-    ]
-}
-];
 // 試合一覧ページ
-export default async function matches() {
-    console.log("App から MatchCard に渡す match データ:", sampleMatch);
+export default async function Page() {
+    let matches: MatchInfo[] = [];
+    try {
+        matches = await getMatches();
+        console.log(matches[0].area)
+    } catch (err) {
+        console.error("試合取得エラー：", err)
+    }
     return (
-        <main>
-            <div>
-                <MatchCard match={sampleMatch} />
-            </div>
-        </main>
+        <div>
+            <main>
+                <div className="wrapper">
+                    <h1 className="text-sm font-bold mb-4 p-2 text-center">ブラジル１部リーグの試合一覧</h1>
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 matchcard">
+                        {matches.map((matchItem) => (
+                            <MatchCard 
+                            key={matchItem.id} 
+                            match={matchItem}
+                            hasComment={false} />
+                        ))}
+                    </div>
+                </div>
+            </main>
+        </div>
     )
 }
