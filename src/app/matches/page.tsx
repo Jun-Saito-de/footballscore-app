@@ -5,13 +5,14 @@ import { getMatches, MatchInfo } from "@/hooks/getMatches";
 
 // 試合一覧ページ
 export default async function Page() {
-    let matches: MatchInfo[] = [];
-    try {
-        matches = await getMatches();
-        console.log(matches[0].area)
-    } catch (err) {
-        console.error("試合取得エラー：", err)
-    }
+    const matches = await getMatches();
+    // let matches: MatchInfo[] = [];
+    // try {
+    //     matches = await getMatches();
+    //     console.log(matches[0].area)
+    // } catch (err) {
+    //     console.error("試合取得エラー：", err)
+    // }
     return (
         <div>
             <main>

@@ -1,23 +1,24 @@
-export async function GET() {
-    const res = await fetch('http://........',  {
-        headers: {
-            'Content-Type': 'application/json',
-            'API-Key': process.env.DATA_API_KEY,
-        },
-    })
-    const data = await res.json()
-    return Response.json({ data })
-}
+// app/api/matches/route.ts
+import { NextResponse } from "next/server";
 
-export async function POST() {
-    const res = await fetch('https:........', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'API-Key': process.env.DATA_API_KEY!,
-        },
-        body: JSON.stringify({ time: new Date().toString() }),
-    })
-    const data = await res.json()
-    return Response.json(data)
+export async function GET() {
+  const token = process.env.NEXT_PUBLIC_FOOTBALL_DATA_API_TOKEN;
+  if (!token) {
+    return NextResponse.json({ error: "APIトークンがありません" }, { status: 500 });
+  }
+
+  const API_URL = "https://api.football-data.org/v4/competitions/2013/matches?season=2025&dateFrom=2025-05-20&dateTo=2025-05-30";
+
+  try {
+    const res = await fetch(API_URL, {
+      headers: {
+        "X-Auth-Token": token,
+      },
+    });
+
+    const data = await res.json();
+    return NextResponse.json(data);
+  } catch (e) {
+    return NextResponse.json({ error: "API取得に失敗しました" }, { status: 500 });
+  }
 }

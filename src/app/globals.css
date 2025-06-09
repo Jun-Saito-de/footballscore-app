@@ -53,6 +53,7 @@ img {
 }
 
 .greenBtn {
+  text-align: center;
   max-width: 400px;
   width: 10em;
   font-weight: 700;
