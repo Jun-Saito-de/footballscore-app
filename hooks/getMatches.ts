@@ -7,7 +7,7 @@ export type TeamInfo = {
 };
 
 export type ScoreInfo = {
-    winner: "HOME_TEAM" | "AWAY TEAM" | "DRAW";
+    winner: "HOME_TEAM" | "AWAY_TEAM" | "DRAW";
     fullTime: { home: number; away: number };
     halfTime: { home: number; away: number };
 }
@@ -31,14 +31,22 @@ export type MatchInfo = {
     attendance: number;
     score: ScoreInfo;
     goals: GoalInfo[];
+    competition: {
+        id: number;
+        name: string;
+        code: string;
+        type: string;
+        emblem: string;
+    };
 }
 
 export async function getMatches() {
     // 8-4でやったprocess.env. 環境変数を取得
-    const token = process.env.FOOTBALL_DATA_API_TOKEN;
+    const token = process.env.NEXT_PUBLIC_FOOTBALL_DATA_API_TOKEN;
     if (!token) {
         throw new Error("サーバーでトークンが設定されていません");
     }
+
     const API_URL = "http://api.football-data.org/v4/competitions/2013/matches?season=2025&dateFrom=2025-05-20&dateTo=2025-05-30";
     const response = await fetch(
         API_URL,
@@ -49,6 +57,9 @@ export async function getMatches() {
                 "Content-Type": "application/json",
             },
         });
+    if (!response.ok) {
+        throw new Error("データ取得に失敗しました");
+    }
     const data = await response.json();
     return data.matches as MatchInfo[];
 }
