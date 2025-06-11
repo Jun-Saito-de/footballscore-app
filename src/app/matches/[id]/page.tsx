@@ -15,17 +15,17 @@ export default async function MatchPage({ params }: { params: { id: string } }) 
     if (!match) return <div className="p-4 text-center">試合が見つかりません</div>;
     const competitionCode = match.competition?.code.toUpperCase();
 
-if (!competitionCode) {
-  throw new Error("大会コードが取得できませんでした");
-}
+    if (!competitionCode) {
+        throw new Error("大会コードが取得できませんでした");
+    }
 
     const standings = await getStandings(competitionCode);
     // ホーム・アウェイチームの試合前勝点を抽出する
     const homeStanding = standings.find(
-       team => team.team.id === match.homeTeam.id
+        team => team.team.id === match.homeTeam.id
     );
     const awayStanding = standings.find(
-       team => team.team.id === match.awayTeam.id
+        team => team.team.id === match.awayTeam.id
     );
 
     return (
@@ -40,6 +40,11 @@ if (!competitionCode) {
                             away: awayStanding?.points ?? 0,
                         }}
                     />
+                    <div className="sp-btn">
+                        <a href="/matches" className="greenBtn">試合一覧</a>
+                        <a href="/myteams" className="greenBtn">マイチーム一覧</a>
+                        <a href="/" className="greenBtn">トップに戻る</a>
+                    </div>
                 </div>
             </main>
         </div>

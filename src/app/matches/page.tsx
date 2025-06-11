@@ -20,11 +20,15 @@ export default async function Page() {
                     <h1 className="text-sm font-bold mb-4 p-2 text-center">ブラジル１部リーグの試合一覧</h1>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 gap-6 lg:grid-cols-3 matchcard">
                         {matches.map((matchItem) => (
-                            <MatchCard 
-                            key={matchItem.id} 
-                            match={matchItem}
-                            hasComment={false} />
+                            <MatchCard
+                                key={matchItem.id}
+                                match={matchItem}
+                                hasComment={false} />
                         ))}
+                    </div>
+                    <div className="sp-btn">
+                        <a href="/myteams" className="greenBtn">マイチーム一覧</a>
+                        <a href="/" className="greenBtn">トップに戻る</a>
                     </div>
                 </div>
             </main>

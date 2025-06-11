@@ -166,3 +166,12 @@ article time {
   justify-content: flex-end;
   align-items: center;
 }
+
+/* SPのみ遷移ボタン表示 */
+.sp-btn {
+  padding-block-start: 1rem;
+  font-size: smaller;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+}

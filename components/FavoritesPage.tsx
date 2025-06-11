@@ -38,6 +38,10 @@ export default function Favoritespage() {
               ))}
             </ul>
           )}
+          <div className="sp-btn">
+            <a href="/matches" className="greenBtn">試合一覧</a>
+            <a href="/" className="greenBtn">トップに戻る</a>
+          </div>
         </div>
       </main>
     </div>
