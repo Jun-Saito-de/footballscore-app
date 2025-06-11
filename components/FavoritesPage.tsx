@@ -28,7 +28,7 @@ export default function Favoritespage() {
     <div>
       <main>
         <div className="wrapper p-4">
-          <h1 className="text-sm font-bold mb-4 p-2 text-center">お気に入りチーム一覧（TLA）</h1>
+          <h1 className="text-sm font-bold mb-4 p-2 text-center">お気に入りチーム一覧</h1>
           {favoriteTeams.length === 0 ? (
             <p>まだお気に入りチームはありません。</p>
           ) : (
@@ -43,3 +43,5 @@ export default function Favoritespage() {
     </div>
   );
 }
+
+

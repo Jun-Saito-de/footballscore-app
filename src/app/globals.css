@@ -158,3 +158,11 @@ article time {
 .scorecard span {
   display: block;
 }
+
+
+/* 試合詳細画面 */
+.button-wrap {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}

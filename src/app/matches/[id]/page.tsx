@@ -34,7 +34,7 @@ if (!competitionCode) {
                 <div className="wrapper">
                     <MatchDetail
                         match={match}
-                        hasComment={false}
+                        hasComment={true}
                         prePoints={{
                             home: homeStanding?.points ?? 0,
                             away: awayStanding?.points ?? 0,

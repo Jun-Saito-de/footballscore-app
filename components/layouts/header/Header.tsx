@@ -18,6 +18,9 @@ const Header = async () => {
                         <Link className="font-medium text-white hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 " href="/matches">
                             試合一覧
                         </Link>
+                        <Link className="font-medium text-white hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 " href="/myteams">
+                            マイチーム
+                        </Link>
                         <div
                         >
                             <Image

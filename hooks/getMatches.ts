@@ -41,13 +41,35 @@ export type MatchInfo = {
 }
 
 export async function getMatches() {
-    // 8-4でやったprocess.env. 環境変数を取得
+    // process.env. 環境変数を取得
     const token = process.env.NEXT_PUBLIC_FOOTBALL_DATA_API_TOKEN;
     if (!token) {
         throw new Error("サーバーでトークンが設定されていません");
     }
 
-    const API_URL = "http://api.football-data.org/v4/competitions/2013/matches?season=2025&dateFrom=2025-05-20&dateTo=2025-05-30";
+    // 日付設定：現在の日にちマイナス10をスタート、2日後をエンドとする
+    // 日付の書式設定
+    function formattedDate(date:Date):String  {
+        return date.toLocaleDateString("ja-JP",
+        {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+        }).replaceAll('/', '-');
+    }
+
+    // 始まりの日にち
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() -10);
+    console.log(formattedDate(startDate));
+
+    // 終了の日にち
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() +2);
+    console.log(formattedDate(endDate));    
+
+
+    const API_URL = `http://api.football-data.org/v4/competitions/2013/matches?season=2025&dateFrom=${formattedDate(startDate)}&dateTo=${formattedDate(endDate)}`;
     const response = await fetch(
         API_URL,
         {
