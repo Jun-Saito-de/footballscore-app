@@ -12,14 +12,14 @@ type MatchProps = {
 
 const FAVORITE_KEY = "favorite_teams";
 
-export default function MatchCard({ match, hasComment }: MatchProps) {
+export default function MatchCard({ match }: MatchProps) {
 
 // チームがお気に入り登録されているかの判定
     // ホーム・アウェイと2つのステートでチェックできるようにする
     const [isFavoriteHome, setIsFavoriteHome] = useState(false);
     const [isFavoriteAway, setIsFavoriteAway] = useState(false);
 
-    // ホーム／アウェイチームがお気に入りかどうかを管理するためのステートです
+    // ホーム／アウェイチームがお気に入りかどうかを管理するためのステート
     useEffect(() => {
         // localStorageからfavorite_teams（文字列配列）を読み込む
         const storedTeam = localStorage.getItem(FAVORITE_KEY) || "[]";
@@ -46,11 +46,23 @@ export default function MatchCard({ match, hasComment }: MatchProps) {
     // statusがライブのときのみ経過時間を表示する
     const showMinute = match.status === "LIVE";
 
+    // コメントがあるかをチェックする
+    const [hasComment, setHasComment] = useState(false);
+    // 試合ごとにコメントを別々で保存するためのキーを作成。アンダースコアを区切りとしてidとの境目を見やすくする
+    const storageKey = `comment_${match.id}`;
+
+    useEffect(() => {
+        // localStorageからキーを取得。savedはコメントの内容
+        const saved = localStorage.getItem(storageKey);
+        if (saved && saved.trim() !== "") {
+            setHasComment(true);
+        }
+    }, [storageKey]);
+
     return (
         <div>
-
             <Link href={`/matches/${match.id}`}>
-                        <article className="match-card flex flex-col  m-4">
+                        <article className="match-card flex flex-col p-2">
                             {/* 上部情報 */}
                             <header className="mb-2">
                                 <p className="text-xs mb-1">第{match.matchday}節</p>
@@ -61,7 +73,7 @@ export default function MatchCard({ match, hasComment }: MatchProps) {
                             </header>
                             {/* スコア部分 */}
                             <div className="mb-2 flex items-center justify-center">
-                                {isFavoriteHome && <span className="text-green-500 ml-1">★</span>}
+                                {isFavoriteHome ? <span className="text-green-500 ml-1">★</span> : <span className="text-green-500 ml-1">☆</span>}
                                 <span className="font-bold teamname__home text-sm md:text-md">{match.homeTeam.name}</span>
                                 <div className="scorecard">
                                     <span className="team-score font-bold text-md md:text-xl">{match.score.fullTime.home}</span>
@@ -69,7 +81,7 @@ export default function MatchCard({ match, hasComment }: MatchProps) {
                                     <span className="team-score font-bold text-md md:text-xl">{match.score.fullTime.away}</span>
                                 </div>
                                 <span className="font-bold teamname__away text-sm md:text-md">{match.awayTeam.name}</span>
-                                {isFavoriteAway && <span className="text-green-500 ml-1">★</span>}
+                                {isFavoriteAway ? <span className="text-green-500 ml-1">★</span> : <span className="text-green-500 ml-1">☆</span>}
                             </div>
                             {/* 経過時間はライブのときのみ表示 */}
                             {showMinute ? (

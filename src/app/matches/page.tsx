@@ -18,7 +18,7 @@ export default async function Page() {
             <main>
                 <div className="wrapper">
                     <h1 className="text-sm font-bold mb-4 p-2 text-center">ブラジル１部リーグの試合一覧</h1>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 matchcard">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 gap-6 lg:grid-cols-3 matchcard">
                         {matches.map((matchItem) => (
                             <MatchCard 
                             key={matchItem.id} 

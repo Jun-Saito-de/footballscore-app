@@ -8,7 +8,8 @@ export default function Home() {
         <div className="iconimage"><img src="/images/brazilflag.png" alt="" /></div>
         <h2 className="logo">Calendario da Serie A</h2>
         <a href="/matches" className="greenBtn">試合一覧</a>
-        <a href="/" className="greenBtn">トップに戻る</a>
+        <a href="/myteams" className="greenBtn">マイチーム一覧</a>
+        <a href="/" className="greenBtn">トップに戻る</a>        
       </div>
     </main>
   );

@@ -40,7 +40,7 @@ export default function MatchDetail({ match, hasComment, prePoints }: Props) {
         // API の homeTeam には id や tla、name が入っているので、tlaをキーにする
         setIsFavoriteHome(favorites.includes(match.homeTeam.tla));
         setIsFavoriteAway(favorites.includes(match.awayTeam.tla))
-    })
+    }, [match.homeTeam.tla, match.awayTeam.tla])
 
     // ★/☆ボタンが押されたときに呼ばれる関数
     // チームの省略名teamTlaを受けとり、isFavoriteがお気に入りかどうかの状態をboolean値でうけ、setIsFavoriteはboolean値を受け取ってvoid（何も返さない）
@@ -54,14 +54,37 @@ export default function MatchDetail({ match, hasComment, prePoints }: Props) {
             alert("お気に入りチームから削除しました");
         } else {
             favorites.push(teamTla);
-            alert("お気に入りチームに追加しました");            
+            alert("お気に入りチームに追加しました");
         }
         // 更新した配列を保存、ステートの切り替え
         localStorage.setItem(FAVORITE_KEY, JSON.stringify(favorites));
         setFavorite(!isFavorite);
     }
 
+    // コメント欄の追加
+    // 今のコメントがあるかの状態操作
+    const [comment, setComment] = useState("");
+    // コメントが保存されているかどうかの状態操作
+    const [savedComment, setSavedComment] = useState("");
+    // 試合ごとにコメントを別々で保存するためのキーを作成。アンダースコアを区切りとしてidとの境目を見やすくする
+    const storageKey = `comment_${match.id}`;
 
+    useEffect(() => {
+        // localStorageからキーを取得。savedはコメントの内容
+        const saved = localStorage.getItem(storageKey);
+        if (saved) {
+            setComment(saved);
+            setSavedComment(saved);
+        }
+    }, [storageKey]);
+
+    const handleSave = () => {
+        // コメントの前後に何もなければ（空なら）何も返さない
+        if (comment.trim() === "") return;
+        localStorage.setItem(storageKey, comment);
+        setSavedComment(comment);
+        alert("コメントを保存しました");
+    }
 
     // UTC 日時を日本語表記にフォーマット
     const date = new Date(match.utcDate);
@@ -96,9 +119,18 @@ export default function MatchDetail({ match, hasComment, prePoints }: Props) {
 
     // statusがライブのときのみ経過時間を表示する
     const showMinute = match.status === "LIVE";
+
+    // statusが試合前のものはfulltimeスコアを表示しない
+    let showFullTime = true;
+    if (match.status === "SCHEDULED" || match.status === "TIMED") {
+        showFullTime = false;
+    }
+
+
+
     return (
         <div>
-            <article className="match-card flex flex-col  m-4">
+            <article className="match-card flex flex-col m-4">
                 {/* 上部情報 */}
                 <header className="mb-2">
                     <p className="text-xs mb-1">第{match.matchday}節</p>
@@ -112,7 +144,7 @@ export default function MatchDetail({ match, hasComment, prePoints }: Props) {
                     <button
                         onClick={() => toggleFavorite(match.homeTeam.tla, isFavoriteHome, setIsFavoriteHome)}
                         aria-label="お気に入り切り替え"
-                        className="text-green-500"
+                        className="text-green-500 mr-1"
                     >
                         {isFavoriteHome ? "★" : "☆"}
                     </button>
@@ -126,7 +158,7 @@ export default function MatchDetail({ match, hasComment, prePoints }: Props) {
                     <button
                         onClick={() => toggleFavorite(match.awayTeam.tla, isFavoriteAway, setIsFavoriteAway)}
                         aria-label="お気に入り切り替え"
-                        className="text-green-500"
+                        className="text-green-500 ml-1"
                     >
                         {isFavoriteAway ? "★" : "☆"}
                     </button>
@@ -135,19 +167,25 @@ export default function MatchDetail({ match, hasComment, prePoints }: Props) {
                 {showMinute ? (
                     <p className="text-sm mb-2 text-center" aria-label="現在の試合時間">{match.minute}分</p>
                 ) : null}
-                {/* 前半のスコア部分 */}
                 <div className="mb-2">
+                    {/* 前半のスコア部分 */}
                     <div className="flex items-center justify-center">
                         <span className="team-score__half text-sm md:text-lg">{match.score.halfTime.home}</span>
                         <span className="vs-separator text-xs">前半</span>
                         <span className="team-score__half text-sm md:text-lg">{match.score.halfTime.away}</span>
                     </div>
-                    {/* 前半のスコア部分 */}
+                    {/* 後半のスコア部分 */}
+
                     <div className="flex items-center justify-center">
-                        <span className="team-score__half text-sm md:text-lg">{`${match.score.fullTime.home - match.score.halfTime.home}`}</span>
+                        {showFullTime ? (
+                            <span className="team-score__half text-sm md:text-lg">{`${match.score.fullTime.home - match.score.halfTime.home}`}</span>
+                        ) : null}
                         <span className="vs-separator text-xs">後半</span>
-                        <span className="team-score__half text-sm md:text-lg">{`${match.score.fullTime.away - match.score.halfTime.away}`}</span>
+                        {showFullTime ? (
+                            <span className="team-score__half text-sm md:text-lg">{`${match.score.fullTime.away - match.score.halfTime.away}`}</span>
+                        ) : null}
                     </div>
+
                 </div>
                 {/* 試合後勝点を計算 */}
                 {/* 勝ち点表示（試合終了時のみ） */}
@@ -161,9 +199,16 @@ export default function MatchDetail({ match, hasComment, prePoints }: Props) {
                     </div>
                 )}
                 {/* コメント有りのときのみコメント表示 */}
-                {hasComment ? (
-                    <p className="match-card__comment-flag text-xs">🖊️ コメント追加済み</p>
-                ) : null}
+                {hasComment && (
+                    // hasCommentがtrueなら
+                    <div className="mt-4">
+                        <h3 className="text-sm font-bold">🖊️ この試合へのコメント</h3>
+                        <textarea className="border border-gray-300 my-2 p-3 w-full text-sm rounded-xs" value={comment} onChange={(element) => setComment(element.target.value)} placeholder="コメントを入力しましょう" />
+                        <div className="button-wrap">
+                            <button className="text-sm font-bold bg-yellow-300 px-2 py-1 rounded-sm mx-2 cursor-pointer md:text-md" onClick={handleSave} disabled={comment.trim() === ""}>保存</button>
+                        </div>
+                    </div>
+                )}
             </article>
             <hr className="md:hidden" />
         </div>
